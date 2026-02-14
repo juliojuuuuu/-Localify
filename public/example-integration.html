@@ -1,0 +1,303 @@
+<!-- ========================================
+     EXEMPLE D'INTÉGRATION HTML - PANNEAU ADMIN
+     ======================================== -->
+
+<!-- Dans votre fichier index.html, ajoutez ces modifications : -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localify - Music Player</title>
+    
+    <!-- Vos CSS existants -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/cards-rows.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/view-dashboard.css">
+    <link rel="stylesheet" href="css/view-playlists.css">
+    <link rel="stylesheet" href="css/view-settings.css">
+    
+    <!-- ⭐ NOUVEAU : CSS Admin -->
+    <link rel="stylesheet" href="css/view-admin.css">
+    
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Canvas pour les particules d'ambiance -->
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Local<span>ify</span></div>
+                <button class="close-menu" onclick="toggleMenu()">✕</button>
+            </div>
+            
+            <div class="sidebar-scroll-area">
+                <!-- Menu Principal -->
+                <nav>
+                    <button onclick="showDashboard()">
+                        <i data-lucide="home"></i> Dashboard
+                    </button>
+                    <button onclick="showLib()">
+                        <i data-lucide="music"></i> Bibliothèque
+                    </button>
+                    <button onclick="showFavs()">
+                        <i data-lucide="heart"></i> Favoris
+                    </button>
+                    <button onclick="showQueue()">
+                        <i data-lucide="list"></i> File d'attente
+                    </button>
+                    <button onclick="showAllPlaylists()">
+                        <i data-lucide="folder"></i> Playlists
+                    </button>
+                    <button onclick="showSettings()">
+                        <i data-lucide="settings"></i> Paramètres
+                    </button>
+                    
+                    <!-- ⭐ NOUVEAU : Bouton Administration (visible uniquement pour les admins) -->
+                    <button id="admin-menu-btn" style="display: none;" onclick="showAdminPanel()">
+                        <i data-lucide="shield"></i> Administration
+                    </button>
+                </nav>
+
+                <!-- Liste des Playlists -->
+                <div class="pl-header">MES PLAYLISTS</div>
+                <div id="pl-list"></div>
+            </div>
+
+            <!-- Footer Sidebar (Bouton Créer) -->
+            <div class="sidebar-footer">
+                <button class="btn-new-pl" onclick="createPlaylistFromMenu()">
+                    + Nouvelle Playlist
+                </button>
+            </div>
+        </aside>
+
+        <!-- CONTENU PRINCIPAL -->
+        <main class="main-content" id="main-content">
+            <!-- Top Navigation -->
+            <div class="top-nav">
+                <button id="burger" onclick="toggleMenu()">☰</button>
+                <nav id="breadcrumb"></nav>
+                <div class="search-wrap">
+                    <input type="search" id="search-bar" placeholder="Rechercher..." oninput="handleSearch(this.value)">
+                </div>
+                <!-- Menu utilisateur -->
+                <div id="user-menu-wrap" class="user-menu-wrap"></div>
+            </div>
+
+            <!-- Zone de contenu dynamique -->
+            <div id="content-area"></div>
+        </main>
+    </div>
+
+    <!-- LECTEUR AUDIO -->
+    <div class="player">
+        <!-- Visualiseur audio (barre du bas) -->
+        <canvas id="visualizer"></canvas>
+        
+        <!-- Barre de progression (mobile) -->
+        <div class="bar-wrap">
+            <input type="range" id="seek" value="0">
+        </div>
+
+        <!-- Gauche : Cover + Info -->
+        <div class="p-left">
+            <div class="cover-container" onclick="toggleFocusMode()">
+                <img id="player-cover" class="album-art" src="" alt="Cover">
+                <div class="cover-overlay">🎵</div>
+            </div>
+            <div class="track-meta">
+                <div id="p-title">Titre</div>
+                <div id="p-artist">Artiste</div>
+            </div>
+        </div>
+
+        <!-- Centre : Contrôles -->
+        <div class="p-mid">
+            <div class="controls">
+                <button onclick="toggleShuffle()" id="btn-shuffle" title="Aléatoire">
+                    <i data-lucide="shuffle"></i>
+                </button>
+                <button onclick="prev()" title="Précédent">
+                    <i data-lucide="skip-back"></i>
+                </button>
+                <button id="play-btn" onclick="togglePlay()" title="Lecture/Pause">
+                    <i data-lucide="play"></i>
+                </button>
+                <button onclick="next()" title="Suivant">
+                    <i data-lucide="skip-forward"></i>
+                </button>
+                <button onclick="toggleRepeat()" id="btn-repeat" title="Répétition">
+                    <i data-lucide="repeat"></i>
+                </button>
+                <button id="main-fav-btn" onclick="toggleCurrentFav()" title="Favoris">
+                    <i data-lucide="heart"></i>
+                </button>
+                <button id="main-add-btn" onclick="openPLModalCurrent()" title="Ajouter à une playlist">
+                    <i data-lucide="plus"></i>
+                </button>
+            </div>
+            <div class="bar-wrap">
+                <span id="cur">0:00</span>
+                <input type="range" id="seek" value="0">
+                <span id="dur">0:00</span>
+            </div>
+        </div>
+
+        <!-- Droite : Volume -->
+        <div class="p-right">
+            <div class="vol-wrap">
+                <button id="mute-btn" onclick="toggleMute()" title="Muet">
+                    <i data-lucide="volume-2"></i>
+                </button>
+                <input type="range" id="vol" min="0" max="1" step="0.01" value="1" oninput="updateVol(this.value)">
+            </div>
+        </div>
+    </div>
+
+    <!-- MODE FOCUS (Overlay plein écran) -->
+    <div id="focus-overlay" class="hidden">
+        <canvas id="visualizer-focus"></canvas>
+        <button class="close-focus" onclick="toggleFocusMode()">✕</button>
+        <div class="focus-content">
+            <img id="focus-cover" src="" alt="Cover">
+            <h1 id="focus-title">Titre</h1>
+            <h2 id="focus-artist">Artiste</h2>
+            
+            <div class="focus-controls">
+                <button onclick="prev()" title="Précédent">
+                    <i data-lucide="skip-back"></i>
+                </button>
+                <button id="focus-play-btn" class="main-play" onclick="togglePlay()" title="Lecture/Pause">
+                    <i data-lucide="play"></i>
+                </button>
+                <button onclick="next()" title="Suivant">
+                    <i data-lucide="skip-forward"></i>
+                </button>
+                <button id="focus-fav-btn" onclick="toggleCurrentFav()" title="Favoris">
+                    <i data-lucide="heart"></i>
+                </button>
+                <button id="focus-add-btn" onclick="openPLModalCurrent()" title="Ajouter">
+                    <i data-lucide="plus"></i>
+                </button>
+            </div>
+            
+            <div class="bar-wrap focus-bar-wrap">
+                <span id="focus-cur">0:00</span>
+                <input type="range" id="focus-seek" value="0">
+                <span id="focus-dur">0:00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu contextuel -->
+    <div id="context-menu" class="context-menu">
+        <div class="context-item" onclick="ctxPlay()">▶️ Lire</div>
+        <div class="context-item" onclick="ctxQueue()">⏳ Ajouter à la file</div>
+        <div class="context-item" onclick="ctxFav()">❤️ Favoris</div>
+        <div class="context-item" onclick="ctxAddToPL()">➕ Ajouter à une playlist</div>
+        <div class="context-divider"></div>
+        <div class="context-item" onclick="ctxYouTube()">📺 Rechercher sur YouTube</div>
+    </div>
+
+    <!-- Vidéo PiP invisible -->
+    <video id="pip-video" style="display:none;" muted loop>
+        <source src="" type="video/mp4">
+    </video>
+
+    <!-- MODALES (à ajouter selon vos besoins) -->
+    <!-- Modal Créer Playlist, Modal Ajouter à Playlist, etc. -->
+
+    <!-- ========================================
+         SCRIPTS
+         ======================================== -->
+    
+    <!-- Scripts existants -->
+    <script src="js/state.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/playlist.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/visualizer.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/view-dashboard.js"></script>
+    <script src="js/view-library.js"></script>
+    <script src="js/view-playlists.js"></script>
+    
+    <!-- ⭐ NOUVEAU : Script Admin -->
+    <script src="js/view-admin.js"></script>
+    
+    <script src="js/main.js"></script>
+
+    <!-- ⭐ NOUVEAU : Script d'initialisation admin -->
+    <script>
+        // Fonction pour afficher/masquer le bouton admin
+        function updateAdminMenuVisibility() {
+            const adminBtn = document.getElementById('admin-menu-btn');
+            if (adminBtn && authState.user && authState.user.isAdmin) {
+                adminBtn.style.display = 'flex';
+            } else if (adminBtn) {
+                adminBtn.style.display = 'none';
+            }
+        }
+
+        // Appeler après chaque connexion/déconnexion
+        document.addEventListener('DOMContentLoaded', () => {
+            // Attendre que l'auth soit initialisée
+            setTimeout(() => {
+                updateAdminMenuVisibility();
+                lucide.createIcons();
+            }, 500);
+        });
+
+        // Appeler aussi après une connexion réussie
+        // (ajoutez cet appel dans votre fonction loginAccount après succès)
+        function onLoginSuccess() {
+            updateAdminMenuVisibility();
+        }
+    </script>
+
+    <!-- Initialisation des icônes Lucide -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
+
+<!-- ========================================
+     NOTES D'INTÉGRATION
+     ======================================== 
+
+1. STRUCTURE DES FICHIERS :
+   /css/
+     - view-admin.css (nouveau)
+   /js/
+     - view-admin.js (nouveau)
+
+2. ORDRE D'INCLUSION :
+   - Les CSS doivent être chargés avant les scripts
+   - view-admin.js doit être chargé après state.js et utils.js
+   - La fonction updateAdminMenuVisibility() doit être appelée après l'authentification
+
+3. VÉRIFICATION :
+   - Le bouton admin n'apparaît que si authState.user.isAdmin === true
+   - Assurez-vous que votre API renvoie bien la propriété isAdmin
+
+4. PERSONNALISATION :
+   - Vous pouvez modifier les couleurs dans view-admin.css
+   - Les icônes utilisent Lucide (déjà inclus dans votre projet)
+   
+========================================== -->

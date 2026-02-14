@@ -1,0 +1,92 @@
+/* ========================================
+   NOUVEAUX PARAMÈTRES (GRID LAYOUT)
+   ======================================== */
+.settings-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.settings-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    transition: transform 0.2s;
+}
+
+.settings-box-wide {
+    grid-column: 1 / -1;
+}
+
+.settings-box:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent);
+}
+
+.box-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.setting-item {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s;
+    border-radius: 8px;
+}
+
+.setting-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+.theme-presets-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.theme-preset-btn {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    padding: 8px;
+    cursor: pointer;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.theme-preset-btn:hover {
+    border-color: var(--accent);
+}
+
+.theme-preset-btn.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent-glow);
+}
+
+.theme-preview {
+    height: 56px;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+}
+
+.theme-name {
+    font-size: 12px;
+    text-align: left;
+}

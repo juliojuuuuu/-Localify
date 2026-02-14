@@ -1,0 +1,32 @@
+/* ========================================
+   VARIABLES CSS
+   ======================================== */
+:root { 
+    --accent: #ff007b; 
+    --accent-hover: #ff1a8a;
+    --accent-glow: rgba(255, 0, 123, 0.4); 
+    --bg: #050505; 
+    --side: #000; 
+    --card: #121212; 
+    --card-hover: #1a1a1a;
+    --text: #fff; 
+    --text-muted: #aaa;
+    --text-dim: #666;
+    --border: #1a1a1a;
+    --success: #1db954;
+    --error: #ff4444;
+    --warning: #ffa726;
+    --active-state: #1db954; 
+
+
+
+    /* NOUVELLES VARIABLES DE PERSONNALISATION */
+    --bg-image: none;             /* Image de fond */
+    --bg-overlay: 0.95;           /* Opacité du fond noir (pour voir l'image à travers) */
+    --card-radius: 12px;          /* Arrondi modulable */
+    --ui-blur: 10px;              /* Intensité du flou global UI */
+    --ui-surface-alpha: 0.72;      /* Opacité des surfaces floutées */
+    --sidebar-bg: var(--side);      /* Fond du menu gauche */
+    --sidebar-footer-bg: #000;      /* Fond footer menu gauche */
+    --sidebar-border: var(--border);/* Bordure du menu gauche */
+}

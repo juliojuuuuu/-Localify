@@ -1,0 +1,45 @@
+/* Playlists Sidebar */
+.sidebar-pl-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; cursor: pointer; border-radius: 6px; transition: background 0.2s; }
+.sidebar-pl-row:hover { background: var(--card-hover); }
+.sidebar-pl-thumb { width: 30px; height: 30px; border-radius: 4px; object-fit: cover; background: #222; }
+.sidebar-pl-name { font-size: 14px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.2s; }
+.sidebar-pl-row:hover .sidebar-pl-name { color: white; }
+
+.btn-new-pl {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    width: 100%;
+}
+.btn-new-pl:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Playlist Header */
+.playlist-header-banner {
+    display: flex;
+    align-items: flex-end;
+    padding: 30px 20px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.1), var(--bg));
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+.pl-info { display: flex; flex-direction: column; gap: 10px; }
+.pl-type { font-size: 12px; font-weight: bold; letter-spacing: 2px; color: var(--text-muted); }
+.pl-title { font-size: 48px; font-weight: 800; margin: 0; line-height: 1; }
+.pl-meta { color: var(--text-dim); font-size: 14px; }
+.pl-actions-bar { display: flex; gap: 15px; margin-top: 15px; }
+.btn-icon-edit { background: none; border: none; font-size: 24px; cursor: pointer; opacity: 0.5; transition: all 0.2s; padding: 5px; border-radius: 50%; }
+.btn-icon-edit:hover { opacity: 1; background: rgba(255,255,255,0.1); transform: scale(1.1); }
+.btn-remove-track:hover { background: var(--error) !important; color: white !important; }
+
+/* Playlist Grid Card */
+.pl-card-img-wrap { width: 100%; aspect-ratio: 1/1; border-radius: 8px; overflow: hidden; position: relative; background: #1a1a1a; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.pl-card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.pl-card-img.default-icon { padding: 30px; opacity: 0.5; }
+.pl-card:hover .pl-card-img { transform: scale(1.1); }
+.pl-card-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; font-size: 40px; color: white; opacity: 0; transition: opacity 0.2s; }
+.pl-card:hover .pl-card-overlay { opacity: 1; }

@@ -1,0 +1,438 @@
+/* ========================================
+   TABLEAU DE BORD (ADMIN PANEL)
+   ======================================== */
+.dashboard-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.kpi-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.kpi-value { font-size: 32px; font-weight: 800; margin: 10px 0; }
+.kpi-label { color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    padding: 0 20px 40px;
+}
+
+.chart-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.bar-chart-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+.bar-label { width: 100px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { flex: 1; background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; overflow: hidden; margin: 0 10px; }
+.bar-fill { height: 100%; background: var(--accent); border-radius: 4px; }
+.bar-val { width: 40px; text-align: right; font-weight: bold; }
+
+/* ========================================
+   DASHBOARD PREMIUM (NOUVEAU DESIGN)
+   ======================================== */
+.dashboard-container {
+    padding-bottom: 40px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* SECTION HÉROS */
+.dash-hero {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.dash-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, #050505 5%, rgba(0,0,0,0.6) 100%);
+    backdrop-filter: blur(calc(var(--ui-blur) * 0.8));
+}
+
+.dash-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.dash-greeting h1 {
+    font-size: 42px;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.1;
+    background: linear-gradient(45deg, #fff, var(--text-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dash-date {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Carte "Reprendre" */
+.dash-resume-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(var(--ui-blur));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 300px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.dash-resume-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+.dash-resume-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.dash-resume-info span { font-size: 10px; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; font-weight: bold; }
+.dash-resume-info h3 { margin: 2px 0; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+.dash-resume-info p { margin: 0; font-size: 12px; color: var(--text-muted); }
+
+.dash-play-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    margin-left: auto;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* GRILLES (Stats & Actions) */
+.dash-section-title {
+    padding: 0 30px;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dash-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 0 30px 40px;
+}
+
+/* Cartes Stats */
+.dash-stat {
+    background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.dash-stat:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.2); }
+
+.dash-stat-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    opacity: 0.2;
+}
+
+.dash-stat-val { font-size: 36px; font-weight: 800; color: white; margin-bottom: 5px; }
+.dash-stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+/* Couleurs Stats */
+.ds-purple { border-bottom: 3px solid #b026ff; }
+.ds-blue { border-bottom: 3px solid #268aff; }
+.ds-green { border-bottom: 3px solid #26ff80; cursor: pointer; }
+.ds-orange { border-bottom: 3px solid #ff9d26; cursor: pointer; }
+
+/* Cartes Actions */
+.dash-action {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.dash-action:hover {
+    background: var(--card-hover);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.da-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.da-mix .da-icon { background: linear-gradient(135deg, #ff007b, #9b004b); color: white; box-shadow: 0 5px 15px rgba(255,0,123,0.3); }
+.da-save .da-icon { background: rgba(29, 185, 84, 0.1); color: #1db954; }
+.da-load .da-icon { background: rgba(255, 167, 38, 0.1); color: #ffa726; }
+
+.da-info h3 { margin: 0 0 5px 0; font-size: 16px; color: white; }
+.da-info p { margin: 0; font-size: 12px; color: var(--text-muted); }
+
+@media (max-width: 768px) {
+    .dash-hero { height: auto; min-height: 250px; }
+    .dash-resume-card { width: 100%; min-width: 0; margin-top: 15px; }
+    .dash-hero-content { align-items: flex-start; flex-direction: column; }
+}
+
+/* --- NOUVEAUTÉS (DERNIERS AJOUTS) --- */
+.dash-new-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    padding: 0 30px;
+    margin-bottom: 20px;
+}
+
+.dash-new-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    position: relative;
+}
+
+.dash-new-card:hover {
+    transform: translateY(-5px);
+    background: var(--card-hover);
+    border-color: var(--accent);
+}
+
+.dash-new-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+}
+
+.dnc-info {
+    padding: 10px;
+}
+
+.dnc-title {
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+
+.dnc-artist {
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- FIX MOBILE DASHBOARD (AJOUTÉ) --- */
+@media (max-width: 768px) {
+    /* 1. Passer les grilles en une seule colonne */
+    .dash-grid, 
+    .dashboard-charts {
+        grid-template-columns: 1fr !important;
+        padding: 0 20px 20px !important;
+        gap: 15px !important;
+    }
+
+    /* 2. Adapter les cartes graphiques */
+    .chart-box {
+        width: 100% !important;
+        box-sizing: border-box;
+        padding: 15px;
+    }
+
+    /* 3. Empiler les éléments dans les barres de stats si nécessaire */
+    .bar-chart-row {
+        font-size: 12px;
+    }
+    
+    .bar-label {
+        width: 80px; /* Réduire un peu la largeur du label */
+    }
+}
+/* --- RECOMMANDATIONS DASHBOARD --- */
+.dash-reco-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    padding: 0 30px 20px;
+}
+
+.dash-reco-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.dash-reco-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+}
+
+.dash-reco-card img {
+    width: 100%;
+    aspect-ratio: 1.1;
+    object-fit: cover;
+    display: block;
+}
+
+.drc-info {
+    padding: 10px 12px 6px;
+}
+
+.drc-title {
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.drc-artist {
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.drc-btn {
+    margin: 0 12px 12px;
+    width: calc(100% - 24px);
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+    border-radius: 999px;
+    padding: 8px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.drc-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.dash-title-with-link {
+    justify-content: space-between;
+}
+
+.dash-mini-link {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.dash-layout-controls {
+    margin: 0 30px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drc-actions {
+    display: grid;
+    grid-template-columns: 1fr 44px 44px;
+    gap: 6px;
+    padding: 0 10px;
+}
+
+.drc-feedback {
+    display: flex;
+    gap: 8px;
+    padding: 8px 10px 12px;
+}
+
+.drc-feedback button {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+    border-radius: 999px;
+    padding: 5px 8px;
+    cursor: pointer;
+}

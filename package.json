@@ -1,0 +1,13 @@
+{
+  "name": "localify-server",
+  "version": "3.0.0",
+  "description": "Serveur Localify",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "music-metadata": "^7.14.0"
+  }
+}

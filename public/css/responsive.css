@@ -1,0 +1,126 @@
+/* ========================================
+   RESPONSIVE (MOBILE & TABLETTE) - CORRIGÉ
+   ======================================== */
+
+@media (max-width: 768px) { 
+    /* 1. SIDEBAR (MENU LATÉRAL) */
+    .sidebar { 
+        position: fixed; top: 0; left: 0;
+        height: 100%; width: 85%; max-width: 320px;
+        transform: translateX(-100%); 
+        z-index: 9999; 
+        box-shadow: 10px 0 50px rgba(0,0,0,0.8);
+        background: var(--sidebar-bg); 
+        overflow-y: auto; 
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 100px; 
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    } 
+
+    .sidebar.open { transform: translateX(0); } 
+    .close-menu { display: block; padding: 15px; font-size: 24px; }
+    
+    /* 2. CONTENU PRINCIPAL */
+    .main-content { padding-bottom: 140px; }
+    
+    /* --- FIX 1 : GRILLE ALBUMS --- */
+    .grid { 
+        /* minmax(0, 1fr) empêche le débordement horizontal */
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important; 
+        gap: 10px; 
+        padding: 10px; 
+    }
+    
+    .card {
+        padding: 15px 5px; /* Marges réduites */
+    }
+
+    .search-wrap { width: 100%; margin-left: 0; }
+    #search-bar { width: 100% !important; }
+    
+    /* --- FIX 2 : LISTE TITRES (BOUTONS) --- */
+    /* Cacher les boutons inutiles sur mobile */
+    .desktop-only { display: none !important; }
+    
+    /* Afficher le menu contextuel mobile */
+    .mobile-only { 
+        display: inline-flex !important; 
+        padding: 8px 10px !important;
+        background: transparent !important;
+        font-size: 20px;
+        color: var(--text-muted);
+    }
+    
+    .row-actions {
+        opacity: 1 !important; /* Toujours visible */
+        gap: 0px;
+    }
+    
+    /* Force le texte à se couper proprement */
+    .track-info { 
+        min-width: 0; 
+        padding-right: 5px;
+    }
+
+    /* 3. LECTEUR MOBILE (STRUCTURE EN COUCHES) */
+    .player {
+        height: 70px;
+        padding: 0 15px;
+        bottom: 0;
+        z-index: 1500;
+        padding-bottom: env(safe-area-inset-bottom);
+        height: calc(70px + env(safe-area-inset-bottom));
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        overflow: hidden;
+        background: transparent !important;
+        border-top: none;
+    }
+
+    .player::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 15, 15, 0.9);
+        backdrop-filter: blur(calc(var(--ui-blur) * 1.5));
+        -webkit-backdrop-filter: blur(calc(var(--ui-blur) * 1.5));
+        border-top: 1px solid rgba(255,255,255,0.1);
+        z-index: 0;
+    }
+
+    #visualizer { 
+        display: block !important; 
+        position: absolute;
+        inset: 0;
+        width: 100%; height: 100%;
+        z-index: 1 !important; 
+        opacity: 0.8;
+        pointer-events: none;
+    }
+
+    .p-left, #play-btn {
+        position: relative;
+        z-index: 2 !important; 
+        text-shadow: 0 2px 5px rgba(0,0,0,0.8); 
+    }
+
+    .p-mid { position: static; width: auto; flex: none; display: block; }
+    .bar-wrap { position: absolute; top: -2px; left: 0; width: 100%; height: 3px; margin: 0; z-index: 10; }
+    #seek { height: 3px; border-radius: 0; }
+    #cur, #dur, .p-right, .controls button:not(#play-btn), .cover-overlay { display: none; }
+
+    .p-left { width: 75%; gap: 12px; }
+    .cover-container { width: 45px; height: 45px; }
+    
+    #play-btn { 
+        display: block; font-size: 28px; 
+        background: transparent; padding: 10px; color: white;
+    }
+    
+    /* Ajustements Mode Focus */
+    .focus-content { padding: 40px 20px 60px 20px; }
+    #focus-cover { max-height: 40vh; margin-bottom: 20px; }
+    .focus-controls { width: 100%; justify-content: space-evenly; }
+    .close-focus { top: 40px; right: 20px; }
+}

@@ -1,0 +1,329 @@
+/* ========================================
+   AMÉLIORATION DU MENU UTILISATEUR
+   ======================================== */
+
+/* Bulle utilisateur */
+.user-bubble-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.user-bubble-btn:hover {
+    transform: scale(1.1);
+    border-color: var(--accent);
+    box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+.user-bubble-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background: #1db954;
+    border: 2px solid var(--bg);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.user-bubble-btn:hover::after {
+    opacity: 1;
+}
+
+.user-bubble-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.user-bubble-btn:hover img {
+    transform: scale(1.1);
+}
+
+/* Menu déroulant */
+.user-menu-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 260px;
+    background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    overflow: hidden;
+    animation: menuSlideIn 0.2s ease-out;
+}
+
+@keyframes menuSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header du menu */
+.user-menu-header {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.03);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-menu-header strong {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.user-menu-header::before {
+    content: '👤';
+    font-size: 18px;
+}
+
+/* Items du menu */
+.user-menu-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #eee;
+    text-align: left;
+    padding: 14px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.user-menu-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-left-color: var(--accent);
+    color: white;
+    padding-left: 20px;
+}
+
+.user-menu-item:active {
+    transform: scale(0.98);
+}
+
+.user-menu-item:last-child {
+    border-top: 1px solid var(--border);
+    color: var(--error);
+}
+
+.user-menu-item:last-child:hover {
+    background: rgba(255, 68, 68, 0.1);
+    border-left-color: var(--error);
+}
+
+/* Séparateur */
+.user-menu-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 0;
+}
+
+/* ========================================
+   MODAL AVATAR
+   ======================================== */
+
+.avatar-option {
+    font-size: 28px;
+    padding: 12px;
+    border: 2px solid var(--border);
+    background: var(--card);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+}
+
+.avatar-option:hover {
+    transform: scale(1.15);
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+.avatar-option:active {
+    transform: scale(1.05);
+}
+
+/* Aperçu avatar */
+#avatar-preview {
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#avatar-preview img,
+#avatar-preview div {
+    animation: avatarPop 0.3s ease-out;
+}
+
+@keyframes avatarPop {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Upload d'avatar */
+#avatar-filename {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ========================================
+   MODAL MOT DE PASSE
+   ======================================== */
+
+#password-modal .styled-input {
+    width: 100%;
+}
+
+#password-modal .setting-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+/* Indicateur de force du mot de passe */
+.password-strength {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.password-strength-bar {
+    height: 100%;
+    background: var(--success);
+    border-radius: 2px;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+.password-strength-bar.weak {
+    width: 33%;
+    background: var(--error);
+}
+
+.password-strength-bar.medium {
+    width: 66%;
+    background: var(--warning);
+}
+
+.password-strength-bar.strong {
+    width: 100%;
+    background: var(--success);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .user-menu-dropdown {
+        width: 90vw;
+        max-width: 300px;
+        right: 10px;
+    }
+    
+    .avatar-option {
+        font-size: 24px;
+        padding: 8px;
+    }
+    
+    #avatar-modal .modal-content {
+        width: 95%;
+        max-width: 100%;
+    }
+}
+
+/* ========================================
+   ANIMATIONS SUPPLÉMENTAIRES
+   ======================================== */
+
+/* Animation au survol du menu */
+.user-menu-wrap:hover .user-bubble-btn {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 var(--accent-glow);
+    }
+    50% {
+        box-shadow: 0 0 0 8px transparent;
+    }
+}
+
+/* Effet de brillance sur les emojis */
+.avatar-option {
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar-option::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s;
+}
+
+.avatar-option:hover::before {
+    left: 100%;
+}

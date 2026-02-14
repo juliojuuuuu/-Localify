@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Localify Web Premium</title>
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/cards-rows.css"> 
+
+    <link rel="stylesheet" href="css/view-dashboard.css"> 
+    <link rel="stylesheet" href="css/view-playlists.css"> 
+    <link rel="stylesheet" href="css/view-settings.css">
+    <link rel="stylesheet" href="css/player.css">
+
+<link rel="stylesheet" href="css/user-menu.css">
+
+
+
+    <link rel="stylesheet" href="css/responsive.css">
+
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<link rel="icon" type="image/png" href="icon-512.png">
+
+<link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <canvas id="particles-canvas"></canvas>
+
+    <canvas id="pip-canvas" width="512" height="512" style="display:none;"></canvas>
+    <video id="pip-video" muted autoplay playsinline style="width:0; height:0; position:absolute; opacity:0; pointer-events:none;"></video>
+
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">LOCALIFY<span>WEB</span></div>
+                <button class="close-menu" onclick="toggleMenu()"><i data-lucide="x"></i></button>
+            </div>
+            
+            <div class="sidebar-scroll-area">
+                <nav>
+                    <button onclick="showLib(); toggleMenu()"><i data-lucide="library"></i> <span>Bibliothèque</span></button>
+                    <button onclick="showDashboard(); toggleMenu()"><i data-lucide="activity"></i> <span>Tableau de bord</span></button>
+                    
+                    <button onclick="openEQModal(); toggleMenu()"><i data-lucide="sliders-horizontal"></i> <span>Égaliseur</span></button>
+                    
+                    <button onclick="showAllArtists(); toggleMenu()"><i data-lucide="mic-2"></i> <span>Artistes</span></button>
+                    <button onclick="showAllPlaylists(); toggleMenu()"><i data-lucide="list-music"></i> <span>Playlists</span></button>
+                    <button onclick="showFavs(); toggleMenu()"><i data-lucide="heart"></i> <span>Favoris</span></button>
+                    <button onclick="showQueue(); toggleMenu()"><i data-lucide="list"></i> <span>File d'attente</span></button>
+                    <button onclick="showSettings(); toggleMenu()"><i data-lucide="settings"></i> <span>Paramètres</span></button>
+
+                        <!-- ⭐ AJOUTE CE BOUTON ICI -->
+<button id="admin-btn" style="display: none;" onclick="showAdminPanel()">
+    <i data-lucide="shield"></i> Administration
+</button>
+                </nav>
+
+                <div class="pl-header">MES PLAYLISTS</div>
+                <div id="pl-list"></div>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="btn-new-pl" onclick="createPlaylistFromMenu()"><i data-lucide="plus-circle"></i> Nouvelle playlist</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-nav">
+                <button id="burger" onclick="toggleMenu()"><i data-lucide="menu"></i></button>
+                <div id="breadcrumb"></div>
+                <div class="search-wrap">
+                    <input type="text" id="search-bar" placeholder="Rechercher..." oninput="handleSearch(this.value)">
+                </div>
+                <div id="user-menu-wrap" class="user-menu-wrap"></div>
+            </header>
+            <div id="content-area"></div>
+        </main>
+
+        <footer class="player">
+            <canvas id="visualizer"></canvas>
+            <button onclick="toggleMiniPlayer()" title="Mini Lecteur">🖼️</button>
+            <div class="p-left">
+                <div class="cover-container" onclick="toggleFocusMode()">
+                    <img id="player-cover" src="" class="album-art" onerror="this.src='https://img.icons8.com/?size=100&id=44029&format=png&color=FFFFFF'">
+                    <div class="cover-overlay"><i data-lucide="maximize-2"></i></div>
+                </div>
+                <div class="track-meta">
+                    <div id="p-title">Aucun titre</div>
+                    <div id="p-artist">Sélectionnez une musique</div>
+                </div>
+            </div>
+            <div class="p-mid">
+                <div class="controls">
+                    <button onclick="prev()"><i data-lucide="skip-back"></i></button>
+                    <button id="play-btn" onclick="togglePlay()"><i data-lucide="play"></i></button>
+                    <button id="main-fav-btn" onclick="toggleCurrentFav()" title="J'aime"><i data-lucide="heart"></i></button>
+                    <button id="main-add-btn" onclick="openCurrentTrackPLModal()" title="Ajouter à une playlist"><i data-lucide="plus"></i></button>
+                    <button onclick="next()"><i data-lucide="skip-forward"></i></button>
+                    <button id="btn-repeat" onclick="toggleRepeat()" title="Répéter"><i data-lucide="repeat"></i></button>
+                </div>
+                <div class="bar-wrap">
+                    <span id="cur">0:00</span>
+                    <input type="range" id="seek" value="0" min="0" max="100">
+                    <span id="dur">0:00</span>
+                </div>
+            </div>
+            <div class="p-right">
+                <div class="vol-wrap">
+                    <button id="mute-btn" onclick="toggleMute()"><i data-lucide="volume-2"></i></button>
+                    <input type="range" id="vol" min="0" max="1" step="0.05" value="1" oninput="updateVol(this.value)">
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="focus-overlay" class="hidden">
+        <button class="close-focus" onclick="toggleFocusMode()">✕</button>
+        
+        <canvas id="visualizer-focus"></canvas>
+        
+        <div class="focus-content">
+            <img id="focus-cover" src="" alt="">
+            <h1 id="focus-title">Titre</h1>
+            <h2 id="focus-artist">Artiste</h2>
+            <div class="focus-bar-wrap">
+                <span id="focus-cur">0:00</span>
+                <input type="range" id="focus-seek" value="0" min="0" max="100">
+                <span id="focus-dur">0:00</span>
+            </div>
+            <div class="focus-controls">
+                <button id="focus-fav-btn" onclick="toggleCurrentFav()"><i data-lucide="heart"></i></button>
+                <button id="focus-add-btn" onclick="openCurrentTrackPLModal()"><i data-lucide="plus"></i></button>
+                <button onclick="prev()"><i data-lucide="skip-back"></i></button>
+                <button onclick="togglePlay()" id="focus-play-btn" class="main-play"><i data-lucide="play"></i></button>
+                <button onclick="next()"><i data-lucide="skip-forward"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pl-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h3>Ajouter à une playlist</h3>
+            <div id="modal-pl-list"></div>
+            <button onclick="closePLModal()" class="btn-secondary">Annuler</button>
+        </div>
+    </div>
+
+    <div id="create-pl-modal" class="modal" style="display:none;">
+        <div class="modal-content create-pl-content">
+            <h3 class="modal-title">✨ Nouvelle Playlist</h3>
+            <p style="color:var(--text-muted); font-size:14px; margin-bottom:15px;">Nom de la playlist :</p>
+            <input type="text" id="new-pl-name" class="modal-input" placeholder="Ex: Soirée..." autocomplete="off">
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeCreatePL()">Annuler</button>
+                <button class="btn-primary" onclick="confirmCreatePL()">Créer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete-pl-modal" class="modal" style="display:none;">
+        <div class="modal-content" style="text-align: center; max-width: 350px;">
+            <h3 class="modal-title" style="color: var(--error); -webkit-text-fill-color: initial; background: none;">⚠️ Suppression</h3>
+            <p id="delete-pl-msg" style="color:var(--text-muted); font-size:15px; margin-bottom:25px;">
+                Voulez-vous vraiment supprimer cette playlist ?
+            </p>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeDeleteModal()">Annuler</button>
+                <button class="btn-danger" onclick="performDeletePL()">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="eq-modal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:10px;">
+                <h3 class="modal-title" style="margin:0;">🎚️ Égaliseur</h3>
+                <select class="styled-select" style="width:120px; padding:5px;" onchange="applyPreset(this.value); updateEQModalSliders();">
+                    <option value="" disabled selected>Presets...</option>
+                    <option value="flat">Plat</option>
+                    <option value="bass">Bass Boost</option>
+                    <option value="rock">Rock</option>
+                    <option value="pop">Pop</option>
+                    <option value="voice">Vocal</option>
+                </select>
+            </div>
+            
+            <div class="eq-container" style="padding: 20px 0; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                <div class="eq-band">
+                    <input type="range" id="modal-eq-bass" orient="vertical" min="-12" max="12" oninput="setEQ('bass', this.value)">
+                    <label style="margin-top:10px; font-weight:bold; color:var(--accent);">Bass</label>
+                </div>
+                <div class="eq-band">
+                    <input type="range" id="modal-eq-mid" orient="vertical" min="-12" max="12" oninput="setEQ('mid', this.value)">
+                    <label style="margin-top:10px; font-weight:bold; color:var(--accent);">Mid</label>
+                </div>
+                <div class="eq-band">
+                    <input type="range" id="modal-eq-treble" orient="vertical" min="-12" max="12" oninput="setEQ('treble', this.value)">
+                    <label style="margin-top:10px; font-weight:bold; color:var(--accent);">Treble</label>
+                </div>
+            </div>
+
+            <div class="modal-actions" style="margin-top:20px;">
+                <button class="btn-secondary" onclick="closeEQModal()">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="context-menu" class="context-menu">
+        <div class="context-item" onclick="ctxPlay()">▶ Lecture immédiate</div>
+        <div class="context-item" onclick="ctxQueue()">⏳ Ajouter à la file</div>
+        <div class="context-item" onclick="ctxFav()">❤️ Liker / Disliker</div>
+        <div class="context-divider"></div>
+        <div class="context-item" onclick="ctxAddToPL()">➕ Ajouter à une playlist...</div>
+        <div class="context-item" onclick="ctxYouTube()">📺 Voir sur YouTube</div>
+    </div>
+
+    <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importData(this)">
+
+    <div id="shortcuts-modal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width: 600px;">
+            <h3 class="modal-title">⌨️ Raccourcis Clavier</h3>
+            <div class="shortcuts-grid">
+                <div class="shortcut-row"><span class="key">Espace</span> <span>Lecture / Pause</span></div>
+                <div class="shortcut-row"><span class="key">N</span> <span>Suivant</span></div>
+                <div class="shortcut-row"><span class="key">P</span> <span>Précédent</span></div>
+                <div class="shortcut-row"><span class="key">←</span> <span class="key">→</span> <span>Reculer / Avancer (5s)</span></div>
+                <div class="shortcut-row"><span class="key">↑</span> <span class="key">↓</span> <span>Volume</span></div>
+                <div class="shortcut-row"><span class="key">F</span> <span>Mode Focus (Plein écran)</span></div>
+                <div class="shortcut-row"><span class="key">?</span> <span>Afficher cette aide</span></div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="document.getElementById('shortcuts-modal').style.display='none'">Compris !</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/state.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/visualizer.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/playlist.js"></script>
+    <script src="js/view-dashboard.js"></script>
+    <script src="js/view-library.js"></script>
+    <script src="js/view-playlists.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/ui.js"></script> 
+    <script src="js/events.js"></script>
+
+<script src="js/user-profile.js"></script>
+<!-- Ajouter juste 1 ligne dans votre HTML -->
+<script src="js/view-admin.js"></script>
+
+    <script src="js/main.js"></script>
+    
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

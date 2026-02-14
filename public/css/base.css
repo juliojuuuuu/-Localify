@@ -1,0 +1,134 @@
+/* ========================================
+   BASE & RESET
+   ======================================== */
+* {
+    box-sizing: border-box;
+}
+
+body { 
+    margin: 0; 
+    background: var(--bg); 
+
+
+
+background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+
+
+    color: var(--text); 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================
+   SCROLLBAR
+   ======================================== */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--card);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--card-hover);
+}
+
+
+
+.app-container {
+    background: rgba(5, 5, 5, var(--bg-overlay)); /* Fond semi-transparent */
+    height: 100vh;
+    display: flex;
+}
+
+
+
+
+
+
+/* --- STYLE DES ICÔNES LUCIDE --- */
+.lucide {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+/* Icônes du menu de gauche un peu plus grandes */
+nav button .lucide {
+    width: 22px;
+    height: 22px;
+    margin-right: 10px;
+    opacity: 0.8;
+}
+
+/* Icônes du lecteur */
+.controls button .lucide {
+    width: 24px;
+    height: 24px;
+}
+
+/* Le bouton Play plus gros */
+#play-btn .lucide, #focus-play-btn .lucide {
+    width: 32px;
+    height: 32px;
+    fill: white; /* Rempli en blanc */
+}
+
+/* Icône favori remplie quand active */
+.fill-current {
+    fill: var(--accent);
+    stroke: var(--accent);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Style du bouton favoris dans le mode focus */
+#focus-fav-btn,
+#focus-add-btn {
+    font-size: 2rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #fff;
+    opacity: 0.6;
+}
+
+/* État "Aimé" avec effet Glow */
+#focus-fav-btn.is-liked,
+#focus-add-btn.is-liked {
+    color: var(--accent) !important;
+    opacity: 1;
+    /* Effet néon/glow basé sur ta couleur d'accent */
+    filter: drop-shadow(0 0 10px var(--accent-glow)); 
+    transform: scale(1.2);
+}
+body.high-contrast {
+    --text: #ffffff;
+    --text-muted: #d6d6d6;
+    --card: rgba(0,0,0,0.9);
+    --card-hover: rgba(255,255,255,0.12);
+    --border: rgba(255,255,255,0.35);
+}
